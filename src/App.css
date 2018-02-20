@@ -1,0 +1,82 @@
+
+.outside {
+  overflow: hidden;
+}
+
+#app {
+  display: grid;
+  grid-template-columns: 100vw;
+  grid-template-rows: 25vh 75vh;
+}
+
+#header {
+  grid-row: 1/2;
+  grid-column: 1/2;
+}
+
+#home {
+  grid-row: 2/3;
+  grid-column: 1/2;
+}
+
+#register {
+  grid-row: 2/3;
+  grid-column: 1/2;
+  display: grid;
+  grid-template-columns: 40vw 60vw;
+  grid-template-rows: 75vh;
+}
+
+#calendar {
+  grid-row: 1/2;
+  grid-column: 2/3;
+  justify-self: center;
+  align-self: center;
+  width: 90%;
+  height: 90%;
+}
+
+#form {
+  grid-row: 1/2;
+  grid-column: 1/2;
+  justify-self: center;
+  align-self: center;
+  width: 100%;
+  height: 100%;
+}
+
+#inventory {
+  grid-row: 2/3;
+  grid-column: 1/2;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 80vw 20vw;
+  grid-template-rows: 75vh;
+}
+
+#lists {
+  grid-row: 1/2;
+  grid-column: 1/2;
+  background-color: grey;
+}
+
+#list-container {
+  display: grid;
+  grid-template-columns: 25% 25% 25% 25%;
+  grid-template-rows: 75vh;
+}
+
+#form-item {
+  grid-row: 1/2;
+  grid-column: 2/5;
+  background-color: teal;
+  display: flex;
+  flex-flow: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.hidden {
+  display: none;
+}
