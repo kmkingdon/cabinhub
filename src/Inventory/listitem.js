@@ -6,8 +6,8 @@ import styled from 'styled-components';
 const ListItem = (props) => {
 
   return (
-    <Container>
-      <Name>{props.item.itemName}</Name>
+    <Container id={(props.item.id === props.deleteId) ? "selected" : " "} >
+      <Name id={(props.item.currentAmmount === 0) ? "emphasize" : ""} onClick={(id)=>{props.selectDelete(props.item.id)}}>{props.item.itemName}</Name>
       <Amount>{props.item.currentAmmount}</Amount>
       <Add  onClick={(id)=>{props.addItem(props.item.id)}}> + </Add>
       <Subtract onClick={(id)=>{props.subtractItem(props.item.id)}}> - </Subtract>
@@ -33,7 +33,9 @@ const Name = styled.h1 `
   justify-self: start;
   align-self: center;
   margin-left: .2rem;
+  cursor: pointer;
 `
+
 const Amount = styled.h2 `
   grid-row: 1/2;
   grid-column: 2/3;

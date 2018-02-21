@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import DeleteItem from './deleteitem';
 
 
 const FormItem = (props) => {
@@ -19,10 +20,11 @@ const FormItem = (props) => {
               <option value="Paper Products">Paper Products</option>
               <option value="Misc">Miscellaneous</option>
             </Select>
-          <Label>What is the currentAmmount</Label>
+          <Label>What is the Current Amount</Label>
             <Input required  type="number" name="currentAmmount" />
           <Submit type="submit" name="submit"/>
         </Form>
+        <DeleteItem deleteId={props.deleteId} deleteItem={props.deleteItem} viewDelete={props.viewDelete}/>
       </Container>
     </div>
   )
@@ -32,7 +34,7 @@ export default FormItem;
 
 const Container =styled.div `
   width: 90%;
-  height: 90%;
+  height: 100%;
   display: flex;
   flex-flow: column;
   justify-content: flex-start;

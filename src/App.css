@@ -77,6 +77,14 @@
   align-items: center;
 }
 
+#emphasize {
+  color: red;
+}
+
+#selected {
+  background-color: pink;
+}
+
 .hidden {
   display: none;
 }

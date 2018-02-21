@@ -14,25 +14,25 @@ const List = (props) => {
       <Container>
         <Title>Kitchen</Title>
         <ListSection>
-          {kitchenList.map(item => <ListItem key={item.id} item={item} addItem={props.addItem} subtractItem={props.subtractItem}/>)}
+          {kitchenList.map(item => <ListItem key={item.id} item={item} addItem={props.addItem} subtractItem={props.subtractItem} deleteId={props.deleteId} selectDelete={props.selectDelete}/>)}
         </ListSection>
       </Container>
       <Container>
         <Title>Paper</Title>
         <ListSection>
-          {paperList.map(item => <ListItem key={item.id} item={item} addItem={props.addItem} subtractItem={props.subtractItem}/>)}
+          {paperList.map(item => <ListItem key={item.id} item={item} addItem={props.addItem} subtractItem={props.subtractItem} deleteId={props.deleteId} selectDelete={props.selectDelete}/>)}
         </ListSection>
       </Container>
       <Container>
         <Title>Cleaning</Title>
         <ListSection>
-          {cleaningList.map(item => <ListItem key={item.id} item={item} addItem={props.addItem} subtractItem={props.subtractItem}/>)}
+          {cleaningList.map(item => <ListItem key={item.id} item={item} addItem={props.addItem} subtractItem={props.subtractItem} deleteId={props.deleteId} selectDelete={props.selectDelete}/>)}
         </ListSection>
       </Container>
       <Container>
         <Title>Misc</Title>
         <ListSection>
-          {miscList.map(item => <ListItem key={item.id} item={item} addItem={props.addItem} subtractItem={props.subtractItem}/>)}
+          {miscList.map(item => <ListItem key={item.id} item={item} addItem={props.addItem} subtractItem={props.subtractItem} deleteId={props.deleteId} selectDelete={props.selectDelete}/>)}
         </ListSection>
       </Container>
     </div>

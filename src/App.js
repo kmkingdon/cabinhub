@@ -23,6 +23,7 @@ class App extends Component {
     this.addItem = this.addItem.bind(this);
     this.subtractItem = this.subtractItem.bind(this);
     this.handleSubmitItem = this.handleSubmitItem.bind(this);
+    this.deleteItem = this.deleteItem.bind(this);
   }
 
 
@@ -244,6 +245,27 @@ class App extends Component {
         .catch(err => console.log(err));
   }
 
+  deleteItem(id) {
+    let DeleteAPI= 'https://cabinhubdb.herokuapp.com/items/' + id;
+    console.log(id)
+
+    fetch(DeleteAPI , {
+      method: "DELETE"
+    })
+      .then(() => {
+        let oldItems = this.state.allItems;
+        let indexSplice;
+        oldItems.forEach((event, index) => {
+          if(event.id === id){
+            indexSplice = index;
+          }
+        })
+        oldItems.splice(indexSplice, 1);
+        this.setState({ allItems: oldItems });
+      })
+      .catch(err => console.log(err));
+}
+
 
   render() {
     return (
@@ -267,6 +289,7 @@ class App extends Component {
                   addItem={this.addItem}
                   subtractItem={this.subtractItem}
                   handleSubmitItem={this.handleSubmitItem}
+                  deleteItem={this.deleteItem}
                 />
               )}/>
           </div>

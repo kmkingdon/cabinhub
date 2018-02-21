@@ -12,8 +12,11 @@ class Inventory extends Component {
       paper:[],
       kitchen:[],
       cleaning:[],
-      misc:[]
+      misc:[],
+      deleteId:0,
+      viewDelete: false
     }
+    this.selectDelete = this.selectDelete.bind(this);
   }
 
   componentDidMount(){
@@ -80,11 +83,22 @@ class Inventory extends Component {
       this.setState({misc : sortedMisc});
   }
 
+  selectDelete(id) {
+
+    if(this.state.viewDelete === false) {
+      this.setState({viewDelete: true})
+      this.setState({deleteId:id})
+    } else {
+      this.setState({viewDelete: false})
+      this.setState({deleteId:0})
+    }
+  }
+
   render() {
     return (
       <div id="inventory">
-        <List addItem={this.props.addItem} subtractItem={this.props.subtractItem} misc={this.state.misc} paper={this.state.paper} kitchen={this.state.kitchen} cleaning={this.state.cleaning} />
-        <FormItem handleSubmitItem={this.props.handleSubmitItem}/>
+        <List deleteId={this.state.deleteId} selectDelete={this.selectDelete} addItem={this.props.addItem} subtractItem={this.props.subtractItem} misc={this.state.misc} paper={this.state.paper} kitchen={this.state.kitchen} cleaning={this.state.cleaning} />
+        <FormItem deleteId={this.state.deleteId} deleteItem={this.props.deleteItem} viewDelete={this.state.viewDelete}  handleSubmitItem={this.props.handleSubmitItem}/>
       </div>
     )
   }
