@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@okta/okta-react": "0.0.12",
     "moment": "^2.20.1",
     "moment-timezone": "^0.5.14",
     "react": "^16.2.0",

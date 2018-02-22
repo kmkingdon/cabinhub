@@ -5,9 +5,18 @@ import moment from 'moment';
 import Header from "./Header";
 import Register from "./Register";
 import Home from "./Home";
+import Dashboard from "./Dashboard";
 import Inventory from "./Inventory";
+import { Security, ImplicitCallback } from '@okta/okta-react';
+
 import './App.css';
 import './Reset.css';
+
+const config = {
+  issuer: 'https://dev-139668.oktapreview.com/oauth2/default',
+  redirect_uri: window.location.origin + '/implicit/callback',
+  client_id: '{0oae3ytzam375pk9d0h7}'
+}
 
 class App extends Component {
   constructor(props){
@@ -16,6 +25,7 @@ class App extends Component {
       events:[],
       confirmForm: false,
       allItems: [],
+
     }
     this.handleSubmitNew = this.handleSubmitNew.bind(this);
     this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
@@ -272,8 +282,15 @@ class App extends Component {
       <div className="outside">
         <BrowserRouter>
           <div id="app">
+          <Security issuer={config.issuer}
+                client_id={config.client_id}
+                redirect_uri={config.redirect_uri}
+          >
             <Header />
             <Route exact path="/" component={Home}/>
+            <Route path="/dashboard" component={() => (
+                <Dashboard />
+              )}/>
             <Route path="/register" component={() => (
                 <Register
                   confirmForm={this.state.confirmForm}
@@ -292,6 +309,8 @@ class App extends Component {
                   deleteItem={this.deleteItem}
                 />
               )}/>
+            <Route path='/implicit/callback' component={ImplicitCallback}/>
+          </Security>
           </div>
         </BrowserRouter>
       </div>

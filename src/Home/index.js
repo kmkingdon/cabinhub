@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
+import { withAuth } from '@okta/okta-react';
+import Login from './login';
 import styled  from 'styled-components';
 import home1 from './home1.jpg';
 import home2 from './home2.jpg';
@@ -9,18 +11,29 @@ import home5 from './home5.jpg';
 import home6 from './home6.jpg';
 
 
-class Home extends Component {
+export default withAuth(class Home extends Component {
   constructor(props) {
     super(props)
     this.state= {
       background: home1,
-      index: 0
+      index: 0,
+      authenticated: null
     }
     this.changeBackground = this.changeBackground.bind(this);
+    this.checkAuthentication = this.checkAuthentication.bind(this);
+    this.checkAuthentication();
   }
 
   componentDidMount() {
-    setTimeout(this.changeBackground, 5000)
+    setTimeout(this.changeBackground, 5000);
+    this.checkAuthentication();
+  }
+
+  async checkAuthentication() {
+   const authenticated = await this.props.auth.isAuthenticated();
+   if (authenticated !== this.state.authenticated) {
+     this.setState({ authenticated });
+   }
   }
 
   changeBackground() {
@@ -43,42 +56,19 @@ class Home extends Component {
       <div id="home">
         <Background src={this.state.background} />
         <Container>
-          <Navigation>
-            <Button>
-              <StyledLink to="/register">
-                Register Your Visit
-              </StyledLink>
-            </Button>
-            <Button>
-              <StyledLink to="/inventory">
-                Check Item Inventory
-              </StyledLink>
-            </Button>
-          </Navigation>
+          <Login authenticated={this.state.authenticated}/>
         </Container>
       </div>
     )
   }
-}
+})
 
-export default Home;
 
 const Background = styled.img `
   height: 75vh;
   width: 100%;
   z-index: -1;
   position: absolute;
-`
-
-const Navigation = styled.nav `
-  z-index: 1;
-  position: relative;
-  width: 100%;
-  height: 20%;
-  display: flex;
-  flex-flow: row;
-  justify-content: center;
-  align-items: center;
 `
 
 const Container = styled.div `
@@ -88,24 +78,4 @@ const Container = styled.div `
   flex-flow: row;
   justify-content: center;
   align-items: center;
-`
-
-const Button = styled.div `
-  width: 20%;
-  height: 4rem;
-  margin: 2rem;
-  border: solid black 1px;
-  background-color: grey;
-  display: flex;
-  flex-flow: row;
-  justify-content: center;
-  align-items: center;
-`
-
-const StyledLink = styled(Link) `
-  text-decoration: none;
-  color: white;
-  width: 100%;
-  text-align: center;
-  font-size: 1.5rem;
 `
