@@ -3,7 +3,8 @@ import { BrowserRouter, Route, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Calendar from '../Calendar';
 import FormNew from './form';
-import FormEdit from './formedit'
+import FormEdit from './formedit';
+import Navigation from '../Navigation';
 
 
 class Register extends Component {
@@ -18,8 +19,11 @@ class Register extends Component {
   }
 
   eventSelect(e) {
-    this.setState({selectedEvent:e});
-    this.setState({formView:'edit'})
+    console.log(e)
+    if(e.users_id=== this.props.userId) {
+      this.setState({selectedEvent:e});
+      this.setState({formView:'edit'});
+    }
   }
 
   back(){
@@ -30,9 +34,14 @@ class Register extends Component {
   render() {
     return (
       <div id="register">
-        <FormNew formView={this.state.formView} confirmForm={this.props.confirmForm} handleSubmitNew={this.props.handleSubmitNew}/>
-        <FormEdit handleDelete={this.props.handleDelete} handleSubmitEdit={this.props.handleSubmitEdit} back={this.back} selectedEvent={this.state.selectedEvent} formView={this.state.formView} />
-        <Calendar eventSelect={this.eventSelect} events={this.props.events} />
+        <Navigation userName={this.props.userName}/>
+        <div id="register-scroll">
+          <div id="register-list">
+            <FormNew formView={this.state.formView} confirmForm={this.props.confirmForm} handleSubmitNew={this.props.handleSubmitNew}/>
+            <FormEdit handleDelete={this.props.handleDelete} handleSubmitEdit={this.props.handleSubmitEdit} back={this.back} selectedEvent={this.state.selectedEvent} formView={this.state.formView} />
+            <Calendar userId={this.props.userId} eventSelect={this.eventSelect} events={this.props.events} />
+          </div>
+        </div>
       </div>
     )
   }

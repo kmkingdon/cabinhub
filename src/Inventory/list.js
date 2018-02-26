@@ -11,36 +11,47 @@ const List = (props) => {
 
   return (
     <div id="list-container">
-      <Container>
-        <Title>Kitchen</Title>
-        <ListSection>
-          {kitchenList.map(item => <ListItem key={item.id} item={item} addItem={props.addItem} subtractItem={props.subtractItem} deleteId={props.deleteId} selectDelete={props.selectDelete}/>)}
-        </ListSection>
-      </Container>
-      <Container>
-        <Title>Paper</Title>
-        <ListSection>
-          {paperList.map(item => <ListItem key={item.id} item={item} addItem={props.addItem} subtractItem={props.subtractItem} deleteId={props.deleteId} selectDelete={props.selectDelete}/>)}
-        </ListSection>
-      </Container>
-      <Container>
-        <Title>Cleaning</Title>
-        <ListSection>
-          {cleaningList.map(item => <ListItem key={item.id} item={item} addItem={props.addItem} subtractItem={props.subtractItem} deleteId={props.deleteId} selectDelete={props.selectDelete}/>)}
-        </ListSection>
-      </Container>
-      <Container>
-        <Title>Misc</Title>
-        <ListSection>
-          {miscList.map(item => <ListItem key={item.id} item={item} addItem={props.addItem} subtractItem={props.subtractItem} deleteId={props.deleteId} selectDelete={props.selectDelete}/>)}
-        </ListSection>
-      </Container>
+      <ContainerOutside>
+        <Container>
+          <Title>Kitchen</Title>
+          <ListSection>
+            {kitchenList.map(item => <ListItem key={item.id} item={item} addItem={props.addItem} subtractItem={props.subtractItem} deleteId={props.deleteId} selectDelete={props.selectDelete}/>)}
+          </ListSection>
+        </Container>
+      </ContainerOutside>
+      <ContainerOutside>
+        <Container>
+          <Title>Paper</Title>
+          <ListSection>
+            {paperList.map(item => <ListItem key={item.id} item={item} addItem={props.addItem} subtractItem={props.subtractItem} deleteId={props.deleteId} selectDelete={props.selectDelete}/>)}
+          </ListSection>
+        </Container>
+      </ContainerOutside>
+      <ContainerOutside>
+        <Container>
+          <Title>Cleaning</Title>
+          <ListSection>
+            {cleaningList.map(item => <ListItem key={item.id} item={item} addItem={props.addItem} subtractItem={props.subtractItem} deleteId={props.deleteId} selectDelete={props.selectDelete}/>)}
+          </ListSection>
+        </Container>
+      </ContainerOutside>
+      <ContainerOutside>
+        <Container>
+          <Title>Misc</Title>
+          <ListSection>
+            {miscList.map(item => <ListItem key={item.id} item={item} addItem={props.addItem} subtractItem={props.subtractItem} deleteId={props.deleteId} selectDelete={props.selectDelete}/>)}
+          </ListSection>
+        </Container>
+      </ContainerOutside>
     </div>
   )
 }
 
 export default List;
 
+const ContainerOutside = styled.div `
+  overflow: scroll;
+`
 const Container = styled.div `
   width: 100%;
   height: 100%;
@@ -49,6 +60,10 @@ const Container = styled.div `
   justify-content: flex-start;
   align-items: center;
   border: solid black 1px;
+  overflow: scroll;
+  @media only screen and (max-width: 500px) {
+    overflow: hidden;
+  }
 `
 const Title = styled.h1 `
   margin-top: 1rem;
@@ -59,8 +74,5 @@ const Title = styled.h1 `
 const ListSection = styled.ul `
   width: 100%;
   height: 100%;
-  display: flex;
-  flex-flow: column;
-  justify-content: flex-start;
-  align-items: center;
+  margin-left: 1rem;
 `

@@ -26,35 +26,34 @@ class Home extends Component {
   changeBackground() {
     const backgroundArray=[ home1, home2, home3, home4, home5 , home6];
     let index= this.state.index;
-    if(index === 5) {
-      this.setState({index: 0});
-      this.setState({background: backgroundArray[index]});
-      setTimeout((e)=>{this.changeBackground(e)}, 5000);
-    } else {
-      index++
-      this.setState({background: backgroundArray[index]});
-      this.setState({index: index});
-      setTimeout((e)=>{this.changeBackground(e)}, 5000);
+    if(this.refs.myTestRef) {
+      if(index === 5) {
+        this.setState({index: 0});
+        this.setState({background: backgroundArray[index]});
+        setTimeout((e)=>{this.changeBackground(e)}, 5000);
+      } else {
+        index++
+        this.setState({background: backgroundArray[index]});
+        this.setState({index: index});
+        setTimeout((e)=>{this.changeBackground(e)}, 5000);
+      }
     }
   }
 
   render() {
     return (
-      <div id="home">
+      <div id="home" ref="myTestRef">
         <Background src={this.state.background} />
         <Container>
-          <Navigation>
-            <Button>
-              <StyledLink to="/register">
-                Register Your Visit
-              </StyledLink>
-            </Button>
-            <Button>
-              <StyledLink to="/inventory">
-                Check Item Inventory
-              </StyledLink>
-            </Button>
-          </Navigation>
+          <Title>Login To Cabin Hub:</Title>
+          <Form onSubmit={(e)=>{this.props.login(e)}}>
+            <Label>Email</Label>
+              <Input required type="text" name="email" placeholder="Enter Your Email"/>
+            <Label>Password</Label>
+              <Input required type="password" name="password" placeholder="Password"/>
+            <Error>{this.props.error}</Error>
+            <Submit type="submit" name="submit" value="Login"/>
+          </Form>
         </Container>
       </div>
     )
@@ -64,48 +63,68 @@ class Home extends Component {
 export default Home;
 
 const Background = styled.img `
-  height: 75vh;
+  height: 80vh;
   width: 100%;
   z-index: -1;
   position: absolute;
-`
-
-const Navigation = styled.nav `
-  z-index: 1;
-  position: relative;
-  width: 100%;
-  height: 20%;
-  display: flex;
-  flex-flow: row;
-  justify-content: center;
-  align-items: center;
 `
 
 const Container = styled.div `
   width: 100%;
   height: 100%;
   display: flex;
-  flex-flow: row;
+  flex-flow: column;
   justify-content: center;
   align-items: center;
 `
 
-const Button = styled.div `
-  width: 20%;
-  height: 4rem;
-  margin: 2rem;
-  border: solid black 1px;
-  background-color: grey;
-  display: flex;
-  flex-flow: row;
-  justify-content: center;
-  align-items: center;
+const Title = styled.h1 `
+margin-top: 1rem;
+color: grey;
+background-color: white;
+border: solid black 1px;
+padding: 1rem;
+margin-bottom: 2rem;
+font-size: 1.5rem;
+text-align: center;
+`
+const Form = styled.form `
+display: flex;
+flex-flow: column;
+justify-content: center;
+align-items: center;
+width: 40%;
+background-color: white;
+border: solid black 1px;
+@media only screen and (max-width: 500px) {
+  width: 90%;
+}
+`
+const Label = styled.label `
+text-align: left;
+font-size: 1rem;
+margin-top: 1rem;
+width: 80%;
+`
+const Input = styled.input `
+font-size: 1rem;
+margin-top: 1rem;
+width: 80%;
+height: 2rem;
+border: solid black 1px;
 `
 
-const StyledLink = styled(Link) `
-  text-decoration: none;
-  color: white;
-  width: 100%;
-  text-align: center;
-  font-size: 1.5rem;
+const Submit = styled.input `
+font-size: 1rem;
+background-color: teal;
+color: white;
+margin-top: 1rem;
+margin-bottom: 1rem;
+width: 50%;
+height: 2rem;
+`
+const Error = styled.p `
+text-align: center;
+font-size: .8rem;
+color: red;
 `

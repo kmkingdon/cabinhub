@@ -38,6 +38,9 @@ const Title = styled.h1 `
   color: teal;
   margin-bottom: 2rem;
   font-size: 1.5rem;
+  @media only screen and (max-width: 500px) {
+    margin-bottom: 1rem;
+  }
 `
 const Form = styled.form `
   display: flex;
@@ -57,6 +60,10 @@ const Input = styled.input `
   margin-top: 1rem;
   width: 100%;
   height: 2rem;
+  border: solid black 1px;
+  @media only screen and (max-width: 500px) {
+    margin-top: 0rem;
+  }
 `
 
 const Submit = styled.input `

@@ -18,8 +18,10 @@ const FormEdit = (props) => {
           <Submit type="submit" name="Edit" value="Edit"/>
         </Form>
         <Confirm className={props.confirmForm ? '' : 'hidden'}>Thank you for editing your visit! </Confirm>
-        <Delete onClick={(id)=>{props.handleDelete(props.selectedEvent.id)}}> Delete This Visit </Delete>
-        <Back onClick={props.back}> Go Back to New Visit </Back>
+        <ButtonContainer>
+          <Delete onClick={(id)=>{props.handleDelete(props.selectedEvent.id)}}> Delete This Visit </Delete>
+          <Back onClick={props.back}> Go Back to New Visit </Back>
+        </ButtonContainer>
       </Container>
     </div>
   )
@@ -35,11 +37,21 @@ const Container =styled.div `
   justify-content: flex-start;
   align-items: center;
 `
+const ButtonContainer =styled.div `
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+`
 const Title = styled.h1 `
   margin-top: 1rem;
   color: teal;
   margin-bottom: 2rem;
   font-size: 1.5rem;
+  @media only screen and (max-width: 500px) {
+    margin-bottom: .5rem;
+  }
 `
 const Form = styled.form `
   display: flex;
@@ -59,6 +71,10 @@ const Input = styled.input `
   margin-top: 1rem;
   width: 100%;
   height: 2rem;
+  border: solid black 1px;
+  @media only screen and (max-width: 500px) {
+    margin-top: 0rem;
+  }
 `
 
 const Submit = styled.input `
@@ -78,21 +94,20 @@ const Confirm = styled.p `
   text-align: center;
 `
 const Delete = styled.button `
-  font-size: .8rem;
+  font-size: .6rem;
   background-color: red;
   color: white;
   border: solid black 1px;
-  margin-top: 3rem;
-  width: 40%;
-  height: 2rem;
+  margin-right: 1rem;
+  width: 45%;
+  height: 1.5rem;
 `
 
 const Back = styled.button `
-  font-size: .8rem;
+  font-size: .6rem;
   background-color: white;
   border: solid black 1px;
   color: black;
-  margin-top: 1rem;
-  width: 40%;
-  height: 2rem;
+  width: 45%;
+  height: 1.5rem;
 `

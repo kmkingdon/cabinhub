@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import List from './list';
-import FormItem from './formitem'
+import FormItem from './formitem';
+import Navigation from '../Navigation';
 
 
 class Inventory extends Component {
@@ -97,8 +98,11 @@ class Inventory extends Component {
   render() {
     return (
       <div id="inventory">
-        <List deleteId={this.state.deleteId} selectDelete={this.selectDelete} addItem={this.props.addItem} subtractItem={this.props.subtractItem} misc={this.state.misc} paper={this.state.paper} kitchen={this.state.kitchen} cleaning={this.state.cleaning} />
-        <FormItem deleteId={this.state.deleteId} deleteItem={this.props.deleteItem} viewDelete={this.state.viewDelete}  handleSubmitItem={this.props.handleSubmitItem}/>
+        <Navigation userName={this.props.userName}/>
+        <div id="inventory-container">
+          <List deleteId={this.state.deleteId} selectDelete={this.selectDelete} addItem={this.props.addItem} subtractItem={this.props.subtractItem} misc={this.state.misc} paper={this.state.paper} kitchen={this.state.kitchen} cleaning={this.state.cleaning} />
+          <FormItem deleteId={this.state.deleteId} deleteItem={this.props.deleteItem} viewDelete={this.state.viewDelete}  handleSubmitItem={this.props.handleSubmitItem}/>
+        </div>
       </div>
     )
   }

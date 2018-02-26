@@ -46,6 +46,9 @@ const Title = styled.h1 `
   margin-bottom: 2rem;
   font-size: 1.5rem;
   text-align: center;
+  @media only screen and (max-width: 500px) {
+    margin-bottom: .5rem;
+  }
 `
 const Form = styled.form `
   display: flex;
@@ -65,12 +68,20 @@ const Input = styled.input `
   margin-top: 1rem;
   width: 100%;
   height: 2rem;
+  border: solid black 1px;
+  @media only screen and (max-width: 500px) {
+    margin-top: 0rem;
+  }
 `
 const Select = styled.select `
   font-size: 1rem;
   margin-top: 1rem;
   width: 100%;
   height: 2rem;
+  border: solid black 1px;
+  @media only screen and (max-width: 500px) {
+    margin-top: 0rem;
+  }
 `
 
 const Submit = styled.input `

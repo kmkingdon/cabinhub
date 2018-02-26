@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Route, Link, Redirect } from 'react-router-dom';
+import decode from 'jwt-decode';
 import Moment from 'react-moment';
 import moment from 'moment';
 import Header from "./Header";
 import Register from "./Register";
 import Home from "./Home";
 import Inventory from "./Inventory";
+import Dashboard from "./Dashboard";
+import Signup from "./Signup";
+import Contacts from "./Contacts";
 import './App.css';
 import './Reset.css';
 
@@ -14,9 +18,19 @@ class App extends Component {
     super(props)
     this.state={
       events:[],
-      confirmForm: false,
       allItems: [],
+      confirmForm: false,
+      authorized: false,
+      userId: 0,
+      error: '',
+      userName: '',
+      signup: false,
+      warningUsername: false
     }
+    this.fetchDatabase= this.fetchDatabase.bind(this);
+    this.login = this.login.bind(this);
+    this.signup = this.signup.bind(this);
+    this.logout = this.logout.bind(this);
     this.handleSubmitNew = this.handleSubmitNew.bind(this);
     this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
@@ -27,34 +41,119 @@ class App extends Component {
   }
 
 
-  componentDidMount(){
-    fetch('https://cabinhubdb.herokuapp.com/events')
-      .then(response => response.json())
-      .then(response => {
+  fetchDatabase(){
 
-          let eventsArray= response.events;
+    if(this.state.authorized) {
 
-          eventsArray.map(event => {
-            let startDate = event.start;
-            startDate= new Date(startDate);
-            startDate= new Date(moment(startDate).add('day',1).format("L"));
-            event.start = startDate;
+      let token = localStorage.getItem('token');
+      let decodedToken= decode(token);
+      let id= decodedToken.id
 
-            let endDate = event.end;
-            endDate= new Date(endDate)
-            endDate= new Date(moment(endDate).add('day',2).format("L"));
-            event.end = endDate;
+      this.setState({userId : id});
+      this.setState({userName: decodedToken.username})
+
+      fetch('https://cabinhubdb.herokuapp.com/events', {
+          method:'GET',
+          headers: new Headers ({
+            Authorization: `Bearer ${token}`
           })
+        })
+        .then(response => response.json())
+        .then(response => {
 
-        this.setState({events: eventsArray})
-      })
+            let eventsArray= response.events;
 
-    fetch('https://cabinhubdb.herokuapp.com/items')
-      .then(response => response.json())
-      .then(response => {
+            eventsArray.map(event => {
+              let startDate = event.start;
+              startDate= new Date(startDate);
+              startDate= new Date(moment(startDate).add( 1 ,'day').format("L"));
+              event.start = startDate;
 
-        this.setState({allItems: response.events});
-      })
+              let endDate = event.end;
+              endDate= new Date(endDate)
+              endDate= new Date(moment(endDate).add( 2 ,'day').format("L"));
+              event.end = endDate;
+            })
+
+          this.setState({events: eventsArray})
+        })
+
+        fetch('https://cabinhubdb.herokuapp.com/items',  {
+            method:'GET',
+            headers: new Headers ({
+              Authorization: `Bearer ${token}`
+            })
+          })
+          .then(response => response.json())
+          .then(response => {
+
+            this.setState({allItems: response.items});
+          })
+    }
+  }
+
+
+  login(e) {
+    e.preventDefault();
+    let newLogin = new FormData(e.target);
+
+    let login= {
+      "email": newLogin.get('email'),
+      "password": newLogin.get('password')
+    }
+
+    fetch('https://cabinhubdb.herokuapp.com/login', {
+          method: "POST",
+          body: JSON.stringify(login),
+          headers: new Headers({ "Content-Type": "application/json" })
+        })
+        .then(response => response.json())
+        .then(response => {
+          if(response.error) {
+            console.log(response.error)
+            this.setState({error:response.error});
+          } else{
+            this.setState({authorized:true});
+            localStorage.setItem('token', response.token)
+            this.fetchDatabase();
+          }
+        })
+        .then(setTimeout(() => {
+          this.setState({ error: " " });
+        }, 5000))
+  }
+
+  signup(e) {
+    e.preventDefault();
+    let newUser = new FormData(e.target);
+
+    let userSubmission= {
+      email: newUser.get('email'),
+      username: newUser.get('username'),
+      password: newUser.get('confirmPassword'),
+    }
+
+    fetch('https://cabinhubdb.herokuapp.com/signup', {
+          method: "POST",
+          body: JSON.stringify(userSubmission),
+          headers: new Headers({ "Content-Type": "application/json" })
+        })
+        .then(response => response.json())
+        .then(response => {
+          if(response.error !== undefined) {
+            this.setState({warningUsername: true})
+            setTimeout(() => {
+                this.setState({ warningUsername: false });
+              }, 5000)
+          } else {
+            this.setState({signup : true})
+          }
+        })
+  }
+
+  logout() {
+    localStorage.removeItem('token');
+    this.setState({authorized: false})
   }
 
   handleSubmitNew(e){
@@ -65,13 +164,19 @@ class App extends Component {
       title: newEvent.get('title'),
       start: new Date(newEvent.get('start')),
       end: new Date(newEvent.get('end')),
-      allDay: true
+      allDay: true,
+      users_id: this.state.userId
     }
+
+    let token = localStorage.getItem('token');
 
     fetch('https://cabinhubdb.herokuapp.com/events', {
           method: "POST",
           body: JSON.stringify(eventSubmission),
-          headers: new Headers({ "Content-Type": "application/json" })
+          headers: new Headers({
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+         })
         })
         .then(response => response.json())
         .then(response => {
@@ -81,12 +186,12 @@ class App extends Component {
 
           let startDate = newEvent.start;
           startDate= new Date(startDate)
-          startDate= new Date(moment(startDate).add('day',1).format("L"))
+          startDate= new Date(moment(startDate).add(1 ,'day').format("L"))
           newEvent.start = startDate
 
           let endDate = newEvent.end;
           endDate= new Date(endDate)
-          endDate= new Date(moment(endDate).add('day',2).format("L"))
+          endDate= new Date(moment(endDate).add( 2 ,'day').format("L"))
           newEvent.end = endDate
 
           oldEvents.push(newEvent);
@@ -113,10 +218,15 @@ class App extends Component {
 
     let PutAPI= 'https://cabinhubdb.herokuapp.com/events/' + id;
 
+    let token = localStorage.getItem('token');
+
     fetch(PutAPI, {
           method: "PUT",
           body: JSON.stringify(eventSubmission),
-          headers: new Headers({ "Content-Type": "application/json" })
+          headers: new Headers({
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+           })
         })
         .then(response => response.json())
         .then(response => {
@@ -168,12 +278,15 @@ class App extends Component {
         updatedItem.currentAmmount = newAmmount;
       }
     }
-
+    let token = localStorage.getItem('token');
     let addAPI = 'https://cabinhubdb.herokuapp.com/items/' + id;
     fetch(addAPI, {
           method: "PUT",
           body: JSON.stringify(updatedItem),
-          headers: new Headers({ "Content-Type": "application/json" })
+          headers: new Headers({
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+           })
         })
         .then(response => response.json())
         .then(response => {
@@ -185,7 +298,7 @@ class App extends Component {
             }
           })
           allItemsList.splice(indexSplice, 1, response.items);
-          this.setState({ events: allItemsList });
+          this.setState({ allItems: allItemsList });
         })
         .catch(err => console.log(err));
   }
@@ -199,12 +312,15 @@ class App extends Component {
         updatedItem.currentAmmount = newAmmount;
       }
     }
-
+    let token = localStorage.getItem('token');
     let addAPI = 'https://cabinhubdb.herokuapp.com/items/' + id;
     fetch(addAPI, {
           method: "PUT",
           body: JSON.stringify(updatedItem),
-          headers: new Headers({ "Content-Type": "application/json" })
+          headers: new Headers({
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+           })
         })
         .then(response => response.json())
         .then(response => {
@@ -216,7 +332,7 @@ class App extends Component {
             }
           })
           allItemsList.splice(indexSplice, 1, response.items);
-          this.setState({ events: allItemsList });
+          this.setState({ allItems: allItemsList });
         })
         .catch(err => console.log(err));
   }
@@ -230,17 +346,21 @@ class App extends Component {
       cat: newItem.get('cat'),
       currentAmmount: newItem.get('currentAmmount'),
     }
+    let token = localStorage.getItem('token');
 
     fetch('https://cabinhubdb.herokuapp.com/items', {
           method: "POST",
           body: JSON.stringify(itemSubmission),
-          headers: new Headers({ "Content-Type": "application/json" })
+          headers: new Headers({
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+           })
         })
         .then(response => response.json())
         .then(response => {
           let oldItems = this.state.allItems;
           oldItems.push(response.items);
-          this.setState({ events: oldItems });
+          this.setState({ allItems: oldItems });
         })
         .catch(err => console.log(err));
   }
@@ -272,25 +392,75 @@ class App extends Component {
       <div className="outside">
         <BrowserRouter>
           <div id="app">
-            <Header />
-            <Route exact path="/" component={Home}/>
-            <Route path="/register" component={() => (
-                <Register
-                  confirmForm={this.state.confirmForm}
-                  events={this.state.events}
-                  handleSubmitNew={this.handleSubmitNew}
-                  handleSubmitEdit={this.handleSubmitEdit}
-                  handleDelete= {this.handleDelete}
-                />
+            <Header authorized={this.state.authorized} logout={this.logout}/>
+            <Route exact path="/" component={() => (
+              this.state.authorized ? (
+                  <Redirect to="/dashboard"/>
+                ) : (
+                  <Home
+                  login={this.login}
+                  error={this.state.error}
+                  />
+                )
               )}/>
-            <Route path="/inventory" component={() => (
-                <Inventory
-                  allItems={this.state.allItems}
-                  addItem={this.addItem}
-                  subtractItem={this.subtractItem}
-                  handleSubmitItem={this.handleSubmitItem}
-                  deleteItem={this.deleteItem}
-                />
+            <Route exact path="/signup" component={() => (
+              this.state.signup ? (
+                  <Redirect to="/"/>
+                ) : (
+                  <Signup
+                  signup={this.signup}
+                  warningUsername={this.state.warningUsername}
+                  />
+                )
+              )}/>
+            <Route exact path="/dashboard" component={() => (
+              this.state.authorized ? (
+                  <Dashboard
+                  authorized={ this.state.authorized}
+                  userName = {this.state.userName}
+                  />
+                ) : (
+                  <Redirect to="/"/>
+                )
+              )}/>
+            <Route exact path="/register" component={() => (
+              this.state.authorized ? (
+                  <Register
+                    userId={this.state.userId}
+                    confirmForm={this.state.confirmForm}
+                    events={this.state.events}
+                    handleSubmitNew={this.handleSubmitNew}
+                    handleSubmitEdit={this.handleSubmitEdit}
+                    handleDelete= {this.handleDelete}
+                    userName = {this.state.userName}
+                  />
+                ) : (
+                  <Redirect to="/"/>
+                )
+              )}/>
+
+            <Route exact path="/inventory" component={() => (
+              this.state.authorized ? (
+                  <Inventory
+                    allItems={this.state.allItems}
+                    addItem={this.addItem}
+                    subtractItem={this.subtractItem}
+                    handleSubmitItem={this.handleSubmitItem}
+                    deleteItem={this.deleteItem}
+                    userName = {this.state.userName}
+                  />
+                ) : (
+                  <Redirect to="/"/>
+                )
+              )}/>
+            <Route exact path="/contacts" component={() => (
+              this.state.authorized ? (
+                  <Contacts
+                    userName = {this.state.userName}
+                  />
+                ) : (
+                  <Redirect to="/"/>
+                )
               )}/>
           </div>
         </BrowserRouter>
