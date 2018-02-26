@@ -94,11 +94,10 @@ class App extends Component {
 
   login(e) {
     e.preventDefault();
-    let newLogin = new FormData(e.target);
 
     let login= {
-      "email": newLogin.get('email'),
-      "password": newLogin.get('password')
+      "email": e.target[0].value,
+      "password": e.target[1].value
     }
 
     fetch('https://cabinhubdb.herokuapp.com/login', {
@@ -124,12 +123,11 @@ class App extends Component {
 
   signup(e) {
     e.preventDefault();
-    let newUser = new FormData(e.target);
 
     let userSubmission= {
-      email: newUser.get('email'),
-      username: newUser.get('username'),
-      password: newUser.get('confirmPassword'),
+      email: e.target[0].value,
+      username: e.target[1].value,
+      password: e.target[2].value,
     }
 
     fetch('https://cabinhubdb.herokuapp.com/signup', {
@@ -157,12 +155,11 @@ class App extends Component {
 
   handleSubmitNew(e){
     e.preventDefault();
-    let newEvent = new FormData(e.target);
 
     let eventSubmission= {
-      title: newEvent.get('title'),
-      start: new Date(newEvent.get('start')),
-      end: new Date(newEvent.get('end')),
+      title: e.target[0].value,
+      start: new Date(e.target[1].value),
+      end: new Date(e.target[2].value),
       allDay: true,
       users_id: this.state.userId
     }
@@ -208,11 +205,11 @@ class App extends Component {
 
   handleSubmitEdit(e, id) {
     e.preventDefault();
-    let newEvent = new FormData(e.target);
+
     let eventSubmission= {
-      title: newEvent.get('title'),
-      start: new Date(newEvent.get('start')),
-      end: new Date(newEvent.get('end'))
+      title: e.target[0].value,
+      start: new Date(e.target[1].value),
+      end: new Date(e.target[2].value)
     }
 
     let PutAPI= 'https://cabinhubdb.herokuapp.com/events/' + id;
@@ -338,12 +335,11 @@ class App extends Component {
 
   handleSubmitItem(e){
     e.preventDefault();
-    let newItem = new FormData(e.target);
 
     let itemSubmission= {
-      itemName: newItem.get('itemName'),
-      cat: newItem.get('cat'),
-      currentAmmount: newItem.get('currentAmmount'),
+      itemName: e.target[0].value,
+      cat: e.target[1].value,
+      currentAmmount: e.target[2].value,
     }
     let token = localStorage.getItem('token');
 

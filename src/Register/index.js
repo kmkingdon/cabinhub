@@ -17,7 +17,7 @@ class Register extends Component {
   }
 
   eventSelect(e) {
-    console.log(e)
+  
     if(e.users_id=== this.props.userId) {
       this.setState({selectedEvent:e});
       this.setState({formView:'edit'});
