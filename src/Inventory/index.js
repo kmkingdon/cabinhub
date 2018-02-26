@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Link } from 'react-router-dom';
-import styled from 'styled-components';
 import List from './list';
 import FormItem from './formitem';
 import Navigation from '../Navigation';

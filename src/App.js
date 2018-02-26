@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Link, Redirect } from 'react-router-dom';
+import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 import decode from 'jwt-decode';
-import Moment from 'react-moment';
 import moment from 'moment';
 import Header from "./Header";
 import Register from "./Register";

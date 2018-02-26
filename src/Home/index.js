@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Link } from 'react-router-dom';
 import styled  from 'styled-components';
 import home1 from './home1.jpg';
 import home2 from './home2.jpg';

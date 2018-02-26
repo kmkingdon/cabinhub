@@ -161,8 +161,3 @@ const Container = styled.div`
   justify-content: flex-start;
   align-items: center;
 `;
-
-const Paragraph = styled.h2`
-  padding = 1rem 0 2rem 0;
-  font-size = 2rem;
-`;
