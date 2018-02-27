@@ -24,9 +24,9 @@ class Inventory extends Component {
 
   componentDidMount(){
 
-    // if(window.innerWidth < 500){
-    //   this.setState({mobileView: "add"})
-    // }
+    if(window.innerWidth < 500){
+      this.setState({mobileView: "add"})
+    }
 
     let allItems= this.props.allItems;
 
