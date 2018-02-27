@@ -25,6 +25,9 @@ const Container = styled.li `
   display: grid;
   grid-template-rows: 100%;
   grid-template-columns: 60% 10% 15% 15%;
+  @media only screen and (max-width: 500px) {
+    background-color: white;
+  }
 `
 
 const Name = styled.h1 `

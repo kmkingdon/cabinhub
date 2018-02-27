@@ -11,17 +11,17 @@ const Navigation = (props)=> {
             <Welcome> Welcome {props.userName}:</Welcome>
             <Button>
               <StyledLink to="/register">
-                Register Your Visit
+                Calendar
               </StyledLink>
             </Button>
             <Button>
               <StyledLink to="/inventory">
-                Check Item Inventory
+                Inventory
               </StyledLink>
             </Button>
             <Button>
               <StyledLink to="/contacts">
-                Important Contacts
+                Contacts
               </StyledLink>
             </Button>
           </NavigationContainer>
@@ -35,13 +35,14 @@ export default Navigation;
 const NavigationContainer = styled.nav `
   background-color: grey;
   display: flex;
-  flex-flow: row;
+  flex-flow: row ;
   justify-content: flex-start;
   align-items: center;
   width: 100%;
   height: 100%;
   @media only screen and (max-width: 500px) {
-    flex-flow: column;
+    flex-flow: row wrap;
+    justify-content: center;
   }
 `
 
@@ -66,8 +67,8 @@ const Button = styled.div `
   justify-content: center;
   align-items: center;
   @media only screen and (max-width: 500px) {
-    width: 40%;
-    margin: .5rem 0rem;
+    width: 25%;
+    margin: .5rem .5rem;
     height: 2rem;
   }
 `

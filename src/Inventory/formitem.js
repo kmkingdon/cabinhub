@@ -5,27 +5,30 @@ import DeleteItem from './deleteitem';
 
 const FormItem = (props) => {
 
+
   return (
     <div id="form-item" >
-      <Container>
-        <Title>Add an Item to the Inventory:</Title>
-        <Form onSubmit={(e)=>{props.handleSubmitItem(e)}}>
-          <Label>What is the name of the item?</Label>
-            <Input required type="text" name="itemName" placeholder="Item Name"/>
-          <Label>What Category?</Label>
-            <Select required name="cat">
-              <option value="">Select a Category</option>
-              <option value="Kitchen">Kitchen</option>
-              <option value="Cleaning">Cleaning</option>
-              <option value="Paper Products">Paper Products</option>
-              <option value="Misc">Miscellaneous</option>
-            </Select>
-          <Label>What is the Current Amount</Label>
-            <Input required  type="number" name="currentAmmount" />
-          <Submit type="submit" name="submit"/>
-        </Form>
-        <DeleteItem deleteId={props.deleteId} deleteItem={props.deleteItem} viewDelete={props.viewDelete}/>
-      </Container>
+      <div className={(props.mobileView === "add") || (props.mobileView === "desktop") ? '' : 'hidden'} >
+        <Container>
+          <Title>Add an Item to the Inventory:</Title>
+          <Form onSubmit={(e)=>{props.handleSubmitItem(e)}}>
+            <Label>What is the name of the item?</Label>
+              <Input required type="text" name="itemName" placeholder="Item Name"/>
+            <Label>What Category?</Label>
+              <Select required name="cat">
+                <option value="">Select a Category</option>
+                <option value="Kitchen">Kitchen</option>
+                <option value="Cleaning">Cleaning</option>
+                <option value="Paper Products">Paper Products</option>
+                <option value="Misc">Miscellaneous</option>
+              </Select>
+            <Label>What is the Current Amount</Label>
+              <Input required  type="number" name="currentAmmount" />
+            <Submit type="submit" name="submit"/>
+          </Form>
+          <DeleteItem deleteId={props.deleteId} deleteItem={props.deleteItem} viewDelete={props.viewDelete}/>
+        </Container>
+      </div>
     </div>
   )
 }

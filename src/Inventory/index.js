@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import List from './list';
 import FormItem from './formitem';
 import Navigation from '../Navigation';
+import ListNav from './listnav';
+
 
 
 class Inventory extends Component {
@@ -13,12 +15,19 @@ class Inventory extends Component {
       cleaning:[],
       misc:[],
       deleteId:0,
-      viewDelete: false
+      viewDelete: false,
+      mobileView: "desktop"
     }
     this.selectDelete = this.selectDelete.bind(this);
+    this.mobileViewSet = this.mobileViewSet.bind(this);
   }
 
   componentDidMount(){
+
+    if(window.innerWidth < 500){
+      this.setState({mobileView: "add"})
+    }
+
     let allItems= this.props.allItems;
 
     let kitchenArray= [];
@@ -93,13 +102,18 @@ class Inventory extends Component {
     }
   }
 
+  mobileViewSet(view) {
+    this.setState({mobileView: view});
+  }
+
   render() {
     return (
       <div id="inventory">
         <Navigation userName={this.props.userName}/>
         <div id="inventory-container">
-          <List deleteId={this.state.deleteId} selectDelete={this.selectDelete} addItem={this.props.addItem} subtractItem={this.props.subtractItem} misc={this.state.misc} paper={this.state.paper} kitchen={this.state.kitchen} cleaning={this.state.cleaning} />
-          <FormItem deleteId={this.state.deleteId} deleteItem={this.props.deleteItem} viewDelete={this.state.viewDelete}  handleSubmitItem={this.props.handleSubmitItem}/>
+          <ListNav mobileViewSet={this.mobileViewSet}/>
+          <List mobileView={this.state.mobileView} deleteId={this.state.deleteId} selectDelete={this.selectDelete} addItem={this.props.addItem} subtractItem={this.props.subtractItem} misc={this.state.misc} paper={this.state.paper} kitchen={this.state.kitchen} cleaning={this.state.cleaning} />
+          <FormItem mobileView={this.state.mobileView} deleteId={this.state.deleteId} deleteItem={this.props.deleteItem} viewDelete={this.state.viewDelete}  handleSubmitItem={this.props.handleSubmitItem}/>
         </div>
       </div>
     )

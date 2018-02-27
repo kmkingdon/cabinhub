@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import ListItem from './listitem';
 
 
+
 const List = (props) => {
   let kitchenList = props.kitchen;
   let cleaningList = props.cleaning;
@@ -11,7 +12,7 @@ const List = (props) => {
 
   return (
     <div id="list-container">
-      <ContainerOutside>
+      <ContainerOutside className={(props.mobileView === "kitchen" ) || (props.mobileView === "desktop") ? '' : 'hidden'}>
         <Container>
           <Title>Kitchen</Title>
           <ListSection>
@@ -19,25 +20,25 @@ const List = (props) => {
           </ListSection>
         </Container>
       </ContainerOutside>
-      <ContainerOutside>
+      <ContainerOutside className={(props.mobileView === "paper") || (props.mobileView === "desktop") ? '' : 'hidden'}>
         <Container>
-          <Title>Paper</Title>
+          <Title id="paper">Paper</Title>
           <ListSection>
             {paperList.map(item => <ListItem key={item.id} item={item} addItem={props.addItem} subtractItem={props.subtractItem} deleteId={props.deleteId} selectDelete={props.selectDelete}/>)}
           </ListSection>
         </Container>
       </ContainerOutside>
-      <ContainerOutside>
+      <ContainerOutside className={(props.mobileView === "cleaning" ) || (props.mobileView === "desktop") ? '' : 'hidden'}>
         <Container>
-          <Title>Cleaning</Title>
+          <Title id="cleaning">Cleaning</Title>
           <ListSection>
             {cleaningList.map(item => <ListItem key={item.id} item={item} addItem={props.addItem} subtractItem={props.subtractItem} deleteId={props.deleteId} selectDelete={props.selectDelete}/>)}
           </ListSection>
         </Container>
       </ContainerOutside>
-      <ContainerOutside>
+      <ContainerOutside className={(props.mobileView === "misc" ) || (props.mobileView === "desktop") ? '' : 'hidden'}>
         <Container>
-          <Title>Misc</Title>
+          <Title id="misc">Misc</Title>
           <ListSection>
             {miscList.map(item => <ListItem key={item.id} item={item} addItem={props.addItem} subtractItem={props.subtractItem} deleteId={props.deleteId} selectDelete={props.selectDelete}/>)}
           </ListSection>
@@ -62,7 +63,8 @@ const Container = styled.div `
   border: solid black 1px;
   overflow: scroll;
   @media only screen and (max-width: 500px) {
-    overflow: hidden;
+    width: 100vw;
+    height: 55vh;
   }
 `
 const Title = styled.h1 `
@@ -70,6 +72,9 @@ const Title = styled.h1 `
   color: teal;
   margin-bottom: 2rem;
   font-size: 1.5rem;
+  @media only screen and (max-width: 500px) {
+    color: white;
+  }
 `
 const ListSection = styled.ul `
   width: 100%;
