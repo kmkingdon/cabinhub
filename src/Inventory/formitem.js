@@ -8,7 +8,6 @@ const FormItem = (props) => {
 
   return (
     <div id="form-item" >
-      <div className={(props.mobileView === "add") || (props.mobileView === "desktop") ? '' : 'hidden'} >
         <Container>
           <Title>Add an Item to the Inventory:</Title>
           <Form onSubmit={(e)=>{props.handleSubmitItem(e)}}>
@@ -17,18 +16,17 @@ const FormItem = (props) => {
             <Label>What Category?</Label>
               <Select required name="cat">
                 <option value="">Select a Category</option>
-                <option value="Kitchen">Kitchen</option>
-                <option value="Cleaning">Cleaning</option>
-                <option value="Paper Products">Paper Products</option>
-                <option value="Misc">Miscellaneous</option>
+                <option value="kitchen">Kitchen</option>
+                <option value="cleaning">Cleaning</option>
+                <option value="paper">Paper Products</option>
+                <option value="misc">Miscellaneous</option>
               </Select>
             <Label>What is the Current Amount</Label>
               <Input required  type="number" name="currentAmmount" />
             <Submit type="submit" name="submit"/>
           </Form>
-          <DeleteItem deleteId={props.deleteId} deleteItem={props.deleteItem} viewDelete={props.viewDelete}/>
+          <DeleteItem deleteCat={props.deleteCat} deleteId={props.deleteId} deleteItem={props.deleteItem} viewDelete={props.viewDelete}/>
         </Container>
-      </div>
     </div>
   )
 }
@@ -51,6 +49,7 @@ const Title = styled.h1 `
   text-align: center;
   @media only screen and (max-width: 500px) {
     margin-bottom: .5rem;
+    color: teal;
   }
 `
 const Form = styled.form `

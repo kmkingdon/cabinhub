@@ -7,7 +7,7 @@ const DeleteItem = (props) => {
     <div className={props.viewDelete ? " " : "hidden"}>
       <Container>
         <Title>Would you like to delete this item from the inventory?</Title>
-        <Button onClick={(id)=>{props.deleteItem(props.deleteId)}}>Delete From Inventory</Button>
+        <Button onClick={(id, cat)=>{props.deleteItem(props.deleteId, props.deleteCat)}}>Delete From Inventory</Button>
       </Container>
     </div>
   )

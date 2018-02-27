@@ -17,14 +17,18 @@ class App extends Component {
     super(props)
     this.state={
       events:[],
-      allItems: [],
+      paper:[],
+      kitchen:[],
+      cleaning:[],
+      misc:[],
       confirmForm: false,
       authorized: false,
       userId: 0,
       error: '',
       userName: '',
       signup: false,
-      warningUsername: false
+      warningUsername: false,
+      mobileView: "desktop"
     }
     this.fetchDatabase= this.fetchDatabase.bind(this);
     this.login = this.login.bind(this);
@@ -37,6 +41,7 @@ class App extends Component {
     this.subtractItem = this.subtractItem.bind(this);
     this.handleSubmitItem = this.handleSubmitItem.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
+    this.mobileViewSet = this.mobileViewSet.bind(this);
   }
 
 
@@ -85,8 +90,67 @@ class App extends Component {
           })
           .then(response => response.json())
           .then(response => {
+            let allItems= response.items;
 
-            this.setState({allItems: response.items});
+            let kitchenArray= [];
+            let cleaningArray= [];
+            let miscArray= [];
+            let paperArray= [];
+
+            if(allItems !== []) {
+              for (var i = 0; i < allItems.length; i++) {
+                switch (allItems[i].cat) {
+
+                  case "kitchen":
+                    kitchenArray.push(allItems[i]);
+                    break;
+
+                  case "cleaning":
+                    cleaningArray.push(allItems[i]);
+                    break;
+
+                  case "misc":
+                    miscArray.push(allItems[i]);
+                    break;
+
+                  case "paper":
+                    paperArray.push(allItems[i]);
+                    break;
+
+                  default:
+                    break;
+                  }
+                }
+              }
+
+              let sortedKitchen= kitchenArray.sort(function(a, b) {
+                if(a.itemName < b.itemName) return -1;
+                if(a.itemName > b.itemName) return 1;
+                return 0;
+              })
+
+              let sortedCleaning= cleaningArray.sort(function(a, b) {
+                if(a.itemName < b.itemName) return -1;
+                if(a.itemName > b.itemName) return 1;
+                return 0;
+              })
+
+              let sortedPaper= paperArray.sort(function(a, b) {
+                if(a.itemName < b.itemName) return -1;
+                if(a.itemName > b.itemName) return 1;
+                return 0;
+              })
+
+              let sortedMisc= miscArray.sort(function(a, b) {
+                if(a.itemName < b.itemName) return -1;
+                if(a.itemName > b.itemName) return 1;
+                return 0;
+              })
+
+              this.setState({kitchen : sortedKitchen});
+              this.setState({cleaning : sortedCleaning});
+              this.setState({paper : sortedPaper});
+              this.setState({misc : sortedMisc});
           })
     }
   }
@@ -108,7 +172,6 @@ class App extends Component {
         .then(response => response.json())
         .then(response => {
           if(response.error) {
-            console.log(response.error)
             this.setState({error:response.error});
           } else{
             this.setState({authorized:true});
@@ -265,8 +328,28 @@ class App extends Component {
       .catch(err => console.log(err));
 }
 
-  addItem(id) {
-    let allItemsArray= this.state.allItems;
+  addItem(id, cat) {
+    let catState = cat;
+    let allItemsArray= [];
+
+    switch (catState) {
+      case "kitchen":
+        allItemsArray= this.state.kitchen;
+        break;
+      case "paper":
+        allItemsArray= this.state.paper;
+        break;
+      case "cleaning":
+        allItemsArray= this.state.cleaning;
+        break;
+      case "misc":
+        allItemsArray= this.state.misc;
+        break;
+      default:
+        break;
+    }
+
+
     let updatedItem={};
     for (var i = 0; i < allItemsArray.length; i++) {
       if(allItemsArray[i].id === id) {
@@ -286,7 +369,23 @@ class App extends Component {
         })
         .then(response => response.json())
         .then(response => {
-          let allItemsList = this.state.allItems;
+          let allItemsList=[];
+          switch (catState) {
+            case "kitchen":
+              allItemsList= this.state.kitchen;
+              break;
+            case "paper":
+              allItemsList= this.state.paper;
+              break;
+            case "cleaning":
+              allItemsList= this.state.cleaning;
+              break;
+            case "misc":
+              allItemsList= this.state.misc;
+              break;
+            default:
+              break;
+          }
           let indexSplice;
           allItemsList.forEach((item, index) => {
             if(item.id === id){
@@ -294,13 +393,33 @@ class App extends Component {
             }
           })
           allItemsList.splice(indexSplice, 1, response.items);
-          this.setState({ allItems: allItemsList });
+          this.setState({ catState: allItemsList });
         })
         .catch(err => console.log(err));
   }
 
-  subtractItem(id) {
-    let allItemsArray= this.state.allItems;
+  subtractItem(id, cat) {
+    let catState = cat;
+    let allItemsArray=[];
+
+    switch (catState) {
+      case "kitchen":
+        allItemsArray= this.state.kitchen;
+        break;
+      case "paper":
+        allItemsArray= this.state.paper;
+        break;
+      case "cleaning":
+        allItemsArray= this.state.cleaning;
+        break;
+      case "misc":
+        allItemsArray= this.state.misc;
+        break;
+      default:
+        break;
+    }
+
+
     let updatedItem={};
     for (var i = 0; i < allItemsArray.length; i++) {
       if(allItemsArray[i].id === id) {
@@ -320,7 +439,24 @@ class App extends Component {
         })
         .then(response => response.json())
         .then(response => {
-          let allItemsList = this.state.allItems;
+          let allItemsList=[];
+          switch (catState) {
+            case "kitchen":
+              allItemsList= this.state.kitchen;
+              break;
+            case "paper":
+              allItemsList= this.state.paper;
+              break;
+            case "cleaning":
+              allItemsList= this.state.cleaning;
+              break;
+            case "misc":
+              allItemsList= this.state.misc;
+              break;
+            default:
+              break;
+          }
+
           let indexSplice;
           allItemsList.forEach((item, index) => {
             if(item.id === id){
@@ -328,13 +464,19 @@ class App extends Component {
             }
           })
           allItemsList.splice(indexSplice, 1, response.items);
-          this.setState({ allItems: allItemsList });
+          this.setState({ catState: allItemsList });
         })
         .catch(err => console.log(err));
   }
 
+  mobileViewSet(view) {
+    let viewNew = view.toLowerCase();
+    this.setState({mobileView: viewNew});
+  }
+
   handleSubmitItem(e){
     e.preventDefault();
+    let catState= e.target[1].value;
 
     let itemSubmission= {
       itemName: e.target[0].value,
@@ -353,30 +495,62 @@ class App extends Component {
         })
         .then(response => response.json())
         .then(response => {
-          let oldItems = this.state.allItems;
-          oldItems.push(response.items);
-          this.setState({ allItems: oldItems });
+          let allItemsList=[];
+          switch (catState) {
+            case "kitchen":
+              allItemsList= this.state.kitchen;
+              break;
+            case "paper":
+              allItemsList= this.state.paper;
+              break;
+            case "cleaning":
+              allItemsList= this.state.cleaning;
+              break;
+            case "misc":
+              allItemsList= this.state.misc;
+              break;
+            default:
+              break;
+          }
+
+          allItemsList.push(response.items);
+          this.setState({ catState: allItemsList });
         })
         .catch(err => console.log(err));
   }
 
-  deleteItem(id) {
+  deleteItem(id, cat) {
     let DeleteAPI= 'https://cabinhubdb.herokuapp.com/items/' + id;
-    console.log(id)
 
     fetch(DeleteAPI , {
       method: "DELETE"
     })
       .then(() => {
-        let oldItems = this.state.allItems;
+        let allItemsList=[];
+        switch (cat) {
+          case "kitchen":
+            allItemsList= this.state.kitchen;
+            break;
+          case "paper":
+            allItemsList= this.state.paper;
+            break;
+          case "cleaning":
+            allItemsList= this.state.cleaning;
+            break;
+          case "misc":
+            allItemsList= this.state.misc;
+            break;
+          default:
+            break;
+        }
         let indexSplice;
-        oldItems.forEach((event, index) => {
+        allItemsList.forEach((event, index) => {
           if(event.id === id){
             indexSplice = index;
           }
         })
-        oldItems.splice(indexSplice, 1);
-        this.setState({ allItems: oldItems });
+        allItemsList.splice(indexSplice, 1);
+        this.setState({ cat: allItemsList });
       })
       .catch(err => console.log(err));
 }
@@ -437,7 +611,12 @@ class App extends Component {
             <Route exact path="/inventory" component={() => (
               this.state.authorized ? (
                   <Inventory
-                    allItems={this.state.allItems}
+                    paper={this.state.paper}
+                    kitchen={this.state.kitchen}
+                    cleaning={this.state.cleaning}
+                    misc={this.state.misc}
+                    mobileView={this.state.mobileView}
+                    mobileViewSet={this.mobileViewSet}
                     addItem={this.addItem}
                     subtractItem={this.subtractItem}
                     handleSubmitItem={this.handleSubmitItem}

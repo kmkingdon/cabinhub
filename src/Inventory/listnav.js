@@ -3,8 +3,6 @@ import styled from 'styled-components';
 
 const ListNav = (props) => {
 
-
-
   return (
     <div id="list-nav">
         <Container>
@@ -12,7 +10,6 @@ const ListNav = (props) => {
           <LinkContent onClick={(view)=>{props.mobileViewSet('paper')}}>Paper</LinkContent>
           <LinkContent onClick={(view)=>{props.mobileViewSet('cleaning')}}>Cleaning</LinkContent>
           <LinkContent onClick={(view)=>{props.mobileViewSet('misc')}}>Misc</LinkContent>
-          <LinkContent onClick={(view)=>{props.mobileViewSet('add')}}>Add</LinkContent>
         </Container>
     </div>
   )
