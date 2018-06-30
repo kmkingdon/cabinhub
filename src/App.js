@@ -226,9 +226,7 @@ class App extends Component {
       allDay: true,
       users_id: this.state.userId
     }
-
     let token = localStorage.getItem('token');
-
     fetch('https://cabinhubdb.herokuapp.com/events', {
           method: "POST",
           body: JSON.stringify(eventSubmission),
@@ -328,7 +326,8 @@ class App extends Component {
       .catch(err => console.log(err));
 }
 
-  addItem(id, cat) {
+  addItem(event, id, cat) {
+    event.preventDefault();
     let catState = cat;
     let allItemsArray= [];
 
@@ -398,7 +397,8 @@ class App extends Component {
         .catch(err => console.log(err));
   }
 
-  subtractItem(id, cat) {
+  subtractItem(event, id, cat) {
+    event.preventDefault();
     let catState = cat;
     let allItemsArray=[];
 

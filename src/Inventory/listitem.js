@@ -9,12 +9,12 @@ const ListItem = (props) => {
     <Container id={(props.item.id === props.deleteId) ? "selected" : " "} >
       <Name id={(props.item.currentAmmount === 0) ? "emphasize" : ""} onClick={(id, cat)=>{props.selectDelete(props.item.id, props.item.cat)}}>{props.item.itemName}</Name>
       <Amount>{props.item.currentAmmount}</Amount>
-      <Add  onClick={(id, cat)=>{
-        props.addItem(props.item.id, props.item.cat)
+      <Add  onClick={(event, id, cat)=>{
+        props.addItem(event, props.item.id, props.item.cat)
       }}
       > + </Add>
-      <Subtract onClick={(id, cat)=>{
-        props.subtractItem(props.item.id, props.item.cat)}}> - </Subtract>
+      <Subtract onClick={(event, id, cat)=>{
+        props.subtractItem(event, props.item.id, props.item.cat)}}> - </Subtract>
     </Container>
   )
 }
