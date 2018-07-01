@@ -47,9 +47,9 @@ class Home extends Component {
           <Title>Login To Cabin Hub:</Title>
           <Form onSubmit={(e)=>{this.props.login(e)}}>
             <Label>Email</Label>
-              <Input  type="text" name="email" placeholder="Enter Your Email" value="kmkingdon@gmail.com"/>
+              <Input  type="text" name="email" placeholder="Enter Your Email"/>
             <Label>Password</Label>
-              <Input type="password" name="password" placeholder="Password" value="samplePassword"/>
+              <Input type="password" name="password" placeholder="Password"/>
             <Error>{this.props.error}</Error>
             <Submit type="submit" name="submit" value="Login"/>
           </Form>
